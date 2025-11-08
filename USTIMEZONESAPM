@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>U.S. Time Zones with Clickable Area Codes</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
+    h1 { text-align: center; }
+    #searchBar {
+      display: block;
+      margin: 20px auto;
+      padding: 10px;
+      width: 80%;
+      max-width: 400px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .zone {
+      background: #fff;
+      padding: 15px;
+      margin: 10px auto;
+      max-width: 600px;
+      border-left: 6px solid #0078D7;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .zone h2 { margin: 0 0 10px; }
+    .zone p { margin: 5px 0; }
+    .area-code {
+      margin-right: 8px;
+      text-decoration: none;
+      color: #0078D7;
+    }
+    .area-code:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>U.S. Time Zones and Area Codes</h1>
+  <input type="text" id="searchBar" placeholder="Search by time zone, area code, or city...">
+  <div id="zones"></div>
+
+  <script>
+    const timeZones = [
+      { name: "Eastern Time (ET)", zone: "America/New_York", areaCodes: ["212", "305", "404", "617", "703"], cities: ["New York", "Miami", "Atlanta", "Boston", "Arlington"] },
+      { name: "Central Time (CT)", zone: "America/Chicago", areaCodes: ["312", "214", "504", "314", "612"], cities: ["Chicago", "Dallas", "New Orleans", "St. Louis", "Minneapolis"] },
+      { name: "Mountain Time (MT)", zone: "America/Denver", areaCodes: ["303", "505", "602", "406", "719"], cities: ["Denver", "Albuquerque", "Phoenix", "Billings", "Colorado Springs"] },
+      { name: "Pacific Time (PT)", zone: "America/Los_Angeles", areaCodes: ["213", "415", "619", "702", "971"], cities: ["Los Angeles", "San Francisco", "San Diego", "Las Vegas", "Portland"] },
+      { name: "Alaska Time (AKT)", zone: "America/Anchorage", areaCodes: ["907"], cities: ["Anchorage"] },
+      { name: "Hawaii-Aleutian Time (HAT)", zone: "Pacific/Honolulu", areaCodes: ["808"], cities: ["Honolulu"] }
+    ];
+
+    function renderZones(filter = "") {
+      const container = document.getElementById("zones");
+      container.innerHTML = "";
+      const query = filter.toLowerCase();
+
+      timeZones.forEach(tz => {
+        const match = tz.name.toLowerCase().includes(query) ||
+                      tz.areaCodes.some(code => code.includes(query)) ||
+                      tz.cities.some(city => city.toLowerCase().includes(query));
+        if (match || query === "") {
+          const now = new Date().toLocaleString("en-US", {
+            timeZone: tz.zone,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+          });
+
+          const areaCodeLinks = tz.areaCodes.map(code =>
+            `<a class="area-code" href="https://www.google.com/search?q=area+code+${code}" target="_blank">${code}</a>`
+          ).join("");
+
+          const div = document.createElement("div");
+          div.className = "zone";
+          div.innerHTML = `
+            <h2>${tz.name}</h2>
+            <p><strong>Current Time:</strong> ${now}</p>
+            <p><strong>Area Codes:</strong> ${areaCodeLinks}</p>
+            <p><strong>Cities:</strong> ${tz.cities.join(", ")}</p>
+          `;
+          container.appendChild(div);
+        }
+      });
+    }
+
+    document.getElementById("searchBar").addEventListener("input", (e) => {
+      renderZones(e.target.value);
+    });
+
+    renderZones();
+    setInterval(() => renderZones(document.getElementById("searchBar").value), 60000); // updates every minute
+  </script>
+</body>
+</html>
