@@ -2,97 +2,75 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>U.S. Time Zones with Clickable Area Codes</title>
+  <title>U.S. Area Codes by Time Zone</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
     h1 { text-align: center; }
-    #searchBar {
-      display: block;
-      margin: 20px auto;
-      padding: 10px;
-      width: 80%;
-      max-width: 400px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .zone {
+    .table-container {
+      max-width: 1000px;
+      margin: auto;
+      overflow-x: auto;
       background: #fff;
-      padding: 15px;
-      margin: 10px auto;
-      max-width: 600px;
-      border-left: 6px solid #0078D7;
-      border-radius: 5px;
+      padding: 20px;
+      border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
-    .zone h2 { margin: 0 0 10px; }
-    .zone p { margin: 5px 0; }
-    .area-code {
-      margin-right: 8px;
-      text-decoration: none;
-      color: #0078D7;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
     }
-    .area-code:hover {
-      text-decoration: underline;
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #0078D7;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
     }
   </style>
 </head>
 <body>
-  <h1>U.S. Time Zones and Area Codes</h1>
-  <input type="text" id="searchBar" placeholder="Search by time zone, area code, or city...">
-  <div id="zones"></div>
-
-  <script>
-    const timeZones = [
-      { name: "Eastern Time (ET)", zone: "America/New_York", areaCodes: ["212", "305", "404", "617", "703"], cities: ["New York", "Miami", "Atlanta", "Boston", "Arlington"] },
-      { name: "Central Time (CT)", zone: "America/Chicago", areaCodes: ["312", "214", "504", "314", "612"], cities: ["Chicago", "Dallas", "New Orleans", "St. Louis", "Minneapolis"] },
-      { name: "Mountain Time (MT)", zone: "America/Denver", areaCodes: ["303", "505", "602", "406", "719"], cities: ["Denver", "Albuquerque", "Phoenix", "Billings", "Colorado Springs"] },
-      { name: "Pacific Time (PT)", zone: "America/Los_Angeles", areaCodes: ["213", "415", "619", "702", "971"], cities: ["Los Angeles", "San Francisco", "San Diego", "Las Vegas", "Portland"] },
-      { name: "Alaska Time (AKT)", zone: "America/Anchorage", areaCodes: ["907"], cities: ["Anchorage"] },
-      { name: "Hawaii-Aleutian Time (HAT)", zone: "Pacific/Honolulu", areaCodes: ["808"], cities: ["Honolulu"] }
-    ];
-
-    function renderZones(filter = "") {
-      const container = document.getElementById("zones");
-      container.innerHTML = "";
-      const query = filter.toLowerCase();
-
-      timeZones.forEach(tz => {
-        const match = tz.name.toLowerCase().includes(query) ||
-                      tz.areaCodes.some(code => code.includes(query)) ||
-                      tz.cities.some(city => city.toLowerCase().includes(query));
-        if (match || query === "") {
-          const now = new Date().toLocaleString("en-US", {
-            timeZone: tz.zone,
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: true
-          });
-
-          const areaCodeLinks = tz.areaCodes.map(code =>
-            `<a class="area-code" href="https://www.google.com/search?q=area+code+${code}" target="_blank">${code}</a>`
-          ).join("");
-
-          const div = document.createElement("div");
-          div.className = "zone";
-          div.innerHTML = `
-            <h2>${tz.name}</h2>
-            <p><strong>Current Time:</strong> ${now}</p>
-            <p><strong>Area Codes:</strong> ${areaCodeLinks}</p>
-            <p><strong>Cities:</strong> ${tz.cities.join(", ")}</p>
-          `;
-          container.appendChild(div);
-        }
-      });
-    }
-
-    document.getElementById("searchBar").addEventListener("input", (e) => {
-      renderZones(e.target.value);
-    });
-
-    renderZones();
-    setInterval(() => renderZones(document.getElementById("searchBar").value), 60000); // updates every minute
-  </script>
+  <h1>U.S. Area Codes by Time Zone</h1>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Area Code</th>
+          <th>State</th>
+          <th>Major Cities</th>
+          <th>Time Zone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>212</td><td>New York</td><td>Manhattan</td><td>Eastern</td></tr>
+        <tr><td>305</td><td>Florida</td><td>Miami</td><td>Eastern</td></tr>
+        <tr><td>404</td><td>Georgia</td><td>Atlanta</td><td>Eastern</td></tr>
+        <tr><td>617</td><td>Massachusetts</td><td>Boston</td><td>Eastern</td></tr>
+        <tr><td>202</td><td>District of Columbia</td><td>Washington D.C.</td><td>Eastern</td></tr>
+        <tr><td>312</td><td>Illinois</td><td>Chicago</td><td>Central</td></tr>
+        <tr><td>214</td><td>Texas</td><td>Dallas</td><td>Central</td></tr>
+        <tr><td>504</td><td>Louisiana</td><td>New Orleans</td><td>Central</td></tr>
+        <tr><td>314</td><td>Missouri</td><td>St. Louis</td><td>Central</td></tr>
+        <tr><td>713</td><td>Texas</td><td>Houston</td><td>Central</td></tr>
+        <tr><td>303</td><td>Colorado</td><td>Denver</td><td>Mountain</td></tr>
+        <tr><td>505</td><td>New Mexico</td><td>Albuquerque</td><td>Mountain</td></tr>
+        <tr><td>602</td><td>Arizona</td><td>Phoenix</td><td>Mountain</td></tr>
+        <tr><td>406</td><td>Montana</td><td>Billings</td><td>Mountain</td></tr>
+        <tr><td>213</td><td>California</td><td>Los Angeles</td><td>Pacific</td></tr>
+        <tr><td>415</td><td>California</td><td>San Francisco</td><td>Pacific</td></tr>
+        <tr><td>702</td><td>Nevada</td><td>Las Vegas</td><td>Pacific</td></tr>
+        <tr><td>619</td><td>California</td><td>San Diego</td><td>Pacific</td></tr>
+        <tr><td>971</td><td>Oregon</td><td>Portland</td><td>Pacific</td></tr>
+        <tr><td>907</td><td>Alaska</td><td>Anchorage</td><td>Alaska</td></tr>
+        <tr><td>808</td><td>Hawaii</td><td>Honolulu</td><td>Hawaii-Aleutian</td></tr>
+        <!-- Add more rows here if needed -->
+      </tbody>
+    </table>
+  </div>
 </body>
 </html>
